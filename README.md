@@ -63,14 +63,22 @@ Run `docker compose exec c1 slurmd -C` and adjust the `NodeName=` line.
 ## Roadmap
 
 - [x] **Phase 1:** controller + 2 compute nodes, MUNGE auth, CPU partition, sample jobs
-- [ ] **Phase 2:** GPU node: `Gres=gpu:1` with the real GPU, `gpu` partition, `--gres=gpu:1` jobs
+- [x] **Phase 2:** GPU node: `c1` has `Gres=gpu:1` (real RTX 5060 Ti via `/dev/dxg`), `gpu` partition, `--gres=gpu:1` jobs
 - [ ] **Phase 3:** accounting (`slurmdbd` + MariaDB), per-user limits, fair-share
 - [ ] **Phase 4:** Prometheus + Grafana dashboard for queue state and node utilization
 - [ ] **Phase 5 (optional):** same cluster on 2 to 3 real VMs with NFS, for true multi-host networking
 
 ## Results
 
-_Fill this section with real measurements and screenshots as you complete each phase. Do not add numbers you have not measured._
+**CPU scheduling:** 8 one-core jobs on a 4-core cluster. Before setting `DefMemPerCPU=250` only 2 jobs ran at once; after, 4 ran at once (2 per node) and the rest queued. See `results/03a-queue-before-fix.txt` and `results/03b-queue-after-fix.txt`.
+
+**GPU scheduling:** `c1` exposes the host's RTX 5060 Ti to Slurm as `gres/gpu:1`. A 3-task array of `--gres=gpu:1` jobs ran one task at a time on `c1` while the other two waited with reason `(Resources)`. Slurm set `CUDA_VISIBLE_DEVICES=0` for the running job. See `results/04-gpu-queue.txt` and `results/07-gpu-job-output.txt`.
+
+## Limitations
+
+- Simulated cluster: all nodes are containers on one machine.
+- One physical GPU, declared on `c1` only. Multi-GPU and multi-node GPU scheduling are not tested.
+- WSL2 exposes the GPU as `/dev/dxg`, so `gres.conf` points at that file. Slurm runs with `task/none` (no cgroup device constraint), so GPU access is not enforced per job: the `c1` container itself has the GPU.
 
 ## Problems and fixes
 

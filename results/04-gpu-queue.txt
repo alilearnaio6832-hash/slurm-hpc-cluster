@@ -1,0 +1,3 @@
+       JOBID PARTITION         NAME     USER ST   TIME     NODELIST(REASON) TRES_PER_NODE
+     2_[2-3]       gpu    gpu-queue    alice PD   0:00          (Resources) gres:gpu:1
+         2_1       gpu    gpu-queue    alice  R   0:04                   c1 gres:gpu:1

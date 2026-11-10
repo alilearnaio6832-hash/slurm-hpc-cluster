@@ -6,6 +6,7 @@ x-slurm-node: &slurm-node
   restart: unless-stopped
   volumes:
     - ./configs/slurm.conf:/etc/slurm/slurm.conf:ro
+    - ./configs/gres.conf:/etc/slurm/gres.conf:ro
     - ./jobs:/jobs:ro
     - shared:/shared
 
@@ -24,6 +25,13 @@ services:
       NODE_NAME: c1
     depends_on:
       - slurmctld
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   c2:
     <<: *slurm-node

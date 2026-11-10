@@ -1,0 +1,3 @@
+c1
+CUDA_VISIBLE_DEVICES=0
+GPU 0: NVIDIA GeForce RTX 5060 Ti (UUID: redacted)
