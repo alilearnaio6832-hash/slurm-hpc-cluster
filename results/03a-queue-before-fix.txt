@@ -1,0 +1,7 @@
+docker compose exec -u alice slurmctld sbatch /jobs/queue_demo.sbatch
+Submitted batch job 11
+docker compose exec slurmctld squeue
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+          11_[3-8]       cpu queue-de    alice PD       0:00      1 (None)
+              11_1       cpu queue-de    alice  R       0:00      1 c1
+              11_2       cpu queue-de    alice  R       0:00      1 c2

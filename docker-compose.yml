@@ -1,0 +1,38 @@
+name: slurm-lab
+
+x-slurm-node: &slurm-node
+  build: ./docker
+  image: slurm-lab:latest
+  restart: unless-stopped
+  volumes:
+    - ./configs/slurm.conf:/etc/slurm/slurm.conf:ro
+    - ./jobs:/jobs:ro
+    - shared:/shared
+
+services:
+  slurmctld:
+    <<: *slurm-node
+    hostname: slurmctld
+    environment:
+      ROLE: controller
+
+  c1:
+    <<: *slurm-node
+    hostname: c1
+    environment:
+      ROLE: compute
+      NODE_NAME: c1
+    depends_on:
+      - slurmctld
+
+  c2:
+    <<: *slurm-node
+    hostname: c2
+    environment:
+      ROLE: compute
+      NODE_NAME: c2
+    depends_on:
+      - slurmctld
+
+volumes:
+  shared:

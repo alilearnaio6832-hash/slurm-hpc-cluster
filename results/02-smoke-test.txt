@@ -1,0 +1,8 @@
+== sinfo ==
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+cpu*         up   infinite      2   idle c[1-2]
+== submit hello_cpu as alice ==
+job id: 3
+== job output (one line per node) ==
+c1
+c2

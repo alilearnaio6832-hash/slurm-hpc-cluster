@@ -1,0 +1,6 @@
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           9_[1-8]       cpu queue-de    alice PD       0:00      1 (Resources)
+               1_5       cpu queue-de    alice  R       0:17      1 c1
+               1_6       cpu queue-de    alice  R       0:17      1 c1
+               1_7       cpu queue-de    alice  R       0:17      1 c2
+               1_8       cpu queue-de    alice  R       0:17      1 c2
