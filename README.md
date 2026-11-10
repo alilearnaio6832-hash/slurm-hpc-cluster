@@ -12,13 +12,13 @@ layer for a GPU monitoring and benchmarking portfolio.
 
 ```mermaid
 flowchart TD
-    U["Users (alice, bob)"] --> C["slurmctld (controller)"]
-    C --> N1["c1 (slurmd)"]
-    C --> N2["c2 (slurmd)"]
-    N1 --- S[("/shared volume")]
+    U["Users alice and bob"] --> C["slurmctld controller"]
+    C --> N1["c1 slurmd"]
+    C --> N2["c2 slurmd"]
+    C --- S["shared volume"]
+    N1 --- S
     N2 --- S
-    C --- S
-    M["MUNGE key (same on all nodes)"] -.-> C
+    M["MUNGE key"] -.-> C
     M -.-> N1
     M -.-> N2
 ```
