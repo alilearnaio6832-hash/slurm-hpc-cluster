@@ -1,0 +1,13 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: slurm
+    static_configs:
+      - targets: ["slurm-exporter:9500"]
+
+  # GPU exporter from the separate GPU monitoring project (reached via its Docker network)
+  - job_name: gpu-exporter
+    static_configs:
+      - targets: ["gpu-exporter:9400"]

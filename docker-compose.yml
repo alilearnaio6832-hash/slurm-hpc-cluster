@@ -42,5 +42,45 @@ services:
     depends_on:
       - slurmctld
 
+  slurm-exporter:
+    <<: *slurm-node
+    hostname: slurm-exporter
+    environment:
+      ROLE: exporter
+    ports:
+      - "127.0.0.1:19500:9500"
+    volumes:
+      - ./configs/slurm.conf:/etc/slurm/slurm.conf:ro
+      - ./monitoring:/monitoring:ro
+    depends_on:
+      - slurmctld
+
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:29090:9090"
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus:ro
+      - prometheus_data:/prometheus
+    depends_on:
+      - slurm-exporter
+
+  grafana:
+    image: grafana/grafana:12.1.0
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:23000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
 volumes:
   shared:
+  prometheus_data:
+  grafana_data:

@@ -1,0 +1,12 @@
+# Optional: lets Prometheus reach gpu-exporter of the separate GPU monitoring project.
+# Used automatically by `make` when the Docker network `deploy_default` exists.
+services:
+  prometheus:
+    networks:
+      - default
+      - gpu_monitoring
+
+networks:
+  gpu_monitoring:
+    name: deploy_default
+    external: true

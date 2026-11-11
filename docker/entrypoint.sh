@@ -29,6 +29,10 @@ case "$ROLE" in
         echo "[entrypoint] starting slurmd for node ${NODE_NAME}"
         exec /usr/sbin/slurmd -D -N "${NODE_NAME}"
         ;;
+    exporter)
+        echo "[entrypoint] starting slurm exporter"
+        exec python3 /monitoring/slurm_exporter.py
+        ;;
     *)
         echo "[entrypoint] unknown ROLE '$ROLE'" >&2
         exit 1
